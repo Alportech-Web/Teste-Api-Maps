@@ -11,7 +11,7 @@ function initMap(position) {
     const userLng = position.coords.longitude;
     const travelMode = document.getElementById('travelMode').value;
 
-    const destination = "R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
+    const destination = { lat: -23.595164, lng: -46.684636 }; // Coordenadas do destino
 
     const map = new google.maps.Map(document.getElementById("map"), {
         center: destination,
@@ -23,8 +23,8 @@ function initMap(position) {
     directionsRenderer.setMap(map);
 
     const request = {
-        origin: { lat: userLat, lng: userLng },
-        destination: destination,
+        origin: new google.maps.LatLng(userLat, userLng),
+        destination: new google.maps.LatLng(destination.lat, destination.lng),
         travelMode: google.maps.TravelMode[travelMode],
     };
 
@@ -40,18 +40,22 @@ function initMap(position) {
 
 function getEstimatedTime(userLat, userLng, destination, travelMode) {
     const service = new google.maps.DistanceMatrixService();
+
     service.getDistanceMatrix(
         {
-            origins: [{ lat: userLat, lng: userLng }],
-            destinations: [destination],
+            origins: [new google.maps.LatLng(userLat, userLng)],  // Corrigido
+            destinations: [new google.maps.LatLng(destination.lat, destination.lng)], // Corrigido
             travelMode: google.maps.TravelMode[travelMode],
+            unitSystem: google.maps.UnitSystem.METRIC,
         },
         (response, status) => {
-            if (status === 'OK') {
+            console.log("Response da API Distance Matrix:", response, "Status:", status); // Log de depuração
+            if (status === "OK" && response.rows[0].elements[0].status !== "ZERO_RESULTS") {
                 const duration = response.rows[0].elements[0].duration.text;
-                document.getElementById('estimatedTime').innerText = `Tempo estimado: ${duration}`;
+                document.getElementById("estimatedTime").innerText = `Tempo estimado: ${duration}`;
             } else {
-                document.getElementById('estimatedTime').innerText = "Não foi possível calcular o tempo estimado.";
+                document.getElementById("estimatedTime").innerText = "Não foi possível calcular o tempo estimado.";
+                console.warn("Erro na Distance Matrix API:", response.rows[0].elements[0].status);
             }
         }
     );
