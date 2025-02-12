@@ -9,7 +9,9 @@ document.getElementById('comoChegarBtn').addEventListener('click', () => {
 function initMap(position) {
     const userLat = position.coords.latitude;
     const userLng = position.coords.longitude;
-    const destination = { lat: -23.615808, lng: -46.591048 }; // Coordenadas da Rua Arroio Grande, 19
+    
+    // NOVO DESTINO: VIP OFFICE - Vila Olímpia
+    const destination = { lat: -23.593204, lng: -46.684361 };
 
     const map = new google.maps.Map(document.getElementById("map"), {
         center: destination,
