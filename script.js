@@ -9,12 +9,12 @@ document.getElementById('comoChegarBtn').addEventListener('click', () => {
 function initMap(position) {
     const userLat = position.coords.latitude;
     const userLng = position.coords.longitude;
-    
-    // NOVO DESTINO: VIP OFFICE - Vila Olímpia
-    const destination = "R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
-    
+    const travelMode = document.getElementById('travelMode').value;
+
+    const destination = { lat: -23.595164, lng: -46.684636 }; // Coordenadas do destino
+
     const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: userLat, lng: userLng },
+        center: destination,
         zoom: 14,
     });
 
@@ -25,48 +25,36 @@ function initMap(position) {
     const request = {
         origin: { lat: userLat, lng: userLng },
         destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING,
-        provideRouteAlternatives: true,
-        drivingOptions: {
-            departureTime: new Date(),
-            trafficModel: 'bestguess'
-        },
-        unitSystem: google.maps.UnitSystem.METRIC
+        travelMode: google.maps.TravelMode[travelMode],
     };
 
     directionsService.route(request, (result, status) => {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(result);
-
-            // Exibir informações de tempo e distância
-            const route = result.routes[0];
-            const summaryPanel = document.createElement('div');
-            summaryPanel.innerHTML = `<p><strong>Distância:</strong> ${route.legs[0].distance.text}</p>
-                                     <p><strong>Tempo estimado:</strong> ${route.legs[0].duration.text}</p>`;
-            document.querySelector('.container').appendChild(summaryPanel);
-
-            // Adicionar opções de transporte
-            const travelModeSelector = document.createElement('select');
-            travelModeSelector.innerHTML = `
-                <option value="DRIVING">Carro</option>
-                <option value="WALKING">Caminhada</option>
-                <option value="BICYCLING">Bicicleta</option>
-                <option value="TRANSIT">Transporte Público</option>
-            `;
-            travelModeSelector.addEventListener('change', () => {
-                request.travelMode = travelModeSelector.value;
-                directionsService.route(request, (result, status) => {
-                    if (status === google.maps.DirectionsStatus.OK) {
-                        directionsRenderer.setDirections(result);
-                    }
-                });
-            });
-            document.querySelector('.container').appendChild(travelModeSelector);
-
+            getEstimatedTime(userLat, userLng, destination, travelMode);
         } else {
             alert("Não foi possível traçar a rota: " + status);
         }
     });
+}
+
+function getEstimatedTime(userLat, userLng, destination, travelMode) {
+    const service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+        {
+            origins: [{ lat: userLat, lng: userLng }],
+            destinations: [destination],
+            travelMode: google.maps.TravelMode[travelMode],
+        },
+        (response, status) => {
+            if (status === 'OK') {
+                const duration = response.rows[0].elements[0].duration.text;
+                document.getElementById('estimatedTime').innerText = `Tempo estimado: ${duration}`;
+            } else {
+                document.getElementById('estimatedTime').innerText = "Não foi possível calcular o tempo estimado.";
+            }
+        }
+    );
 }
 
 function showError(error) {
