@@ -71,3 +71,20 @@ function getEstimatedTime(userLat, userLng, destination, travelMode) {
         }
     );
 }
+
+function showError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            alert("Permissão de localização negada.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Informação de localização indisponível.");
+            break;
+        case error.TIMEOUT:
+            alert("Tempo de requisição expirado.");
+            break;
+        case error.UNKNOWN_ERROR:
+            alert("Ocorreu um erro desconhecido.");
+            break;
+    }
+}
