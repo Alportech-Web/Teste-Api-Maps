@@ -1,7 +1,8 @@
 document.getElementById('comoChegarBtn').addEventListener('click', () => {
     if (navigator.geolocation) {
-        // Mostra o ícone de carregamento
+        // Mostra o ícone de carregamento e a sobreposição
         document.getElementById('loading').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
         
         navigator.geolocation.getCurrentPosition(initMap, showError);
     } else {
@@ -43,8 +44,9 @@ function initMap(position) {
             alert("Não foi possível traçar a rota: " + status);
         }
 
-        // Esconde o ícone de carregamento após o retorno da API
+        // Esconde o ícone de carregamento e a sobreposição após o retorno da API
         document.getElementById('loading').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
     });
 }
 
