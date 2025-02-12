@@ -31,7 +31,11 @@ function initMap(position) {
     directionsService.route(request, (result, status) => {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(result);
-            getEstimatedTime(userLat, userLng, destination, travelMode);
+            // Limpa a mensagem antes de fazer nova requisição
+            document.getElementById("estimatedTime").innerText = "Calculando...";
+            setTimeout(() => {  // Pequeno delay antes de chamar a API
+                getEstimatedTime(userLat, userLng, destination, travelMode);
+            }, 500);
         } else {
             alert("Não foi possível traçar a rota: " + status);
         }
@@ -43,14 +47,15 @@ function getEstimatedTime(userLat, userLng, destination, travelMode) {
 
     service.getDistanceMatrix(
         {
-            origins: [new google.maps.LatLng(userLat, userLng)],  // Corrigido
-            destinations: [new google.maps.LatLng(destination.lat, destination.lng)], // Corrigido
+            origins: [new google.maps.LatLng(userLat, userLng)],  
+            destinations: [new google.maps.LatLng(destination.lat, destination.lng)], 
             travelMode: google.maps.TravelMode[travelMode],
             unitSystem: google.maps.UnitSystem.METRIC,
         },
         (response, status) => {
-            console.log("Response da API Distance Matrix:", response, "Status:", status); // Log de depuração
-            if (status === "OK" && response.rows[0].elements[0].status !== "ZERO_RESULTS") {
+            console.log("Response da API Distance Matrix:", response, "Status:", status);
+
+            if (status === "OK" && response.rows[0].elements[0].status === "OK") {
                 const duration = response.rows[0].elements[0].duration.text;
                 document.getElementById("estimatedTime").innerText = `Tempo estimado: ${duration}`;
             } else {
