@@ -15,9 +15,9 @@ function initMap(position) {
     const travelMode = document.getElementById('travelMode').value;
 
     const destination = "Edifício Milan Head Office, R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
-
+    
     const map = new google.maps.Map(document.getElementById("map"), {
-        center: destination,
+        center: { lat: userLat, lng: userLng },
         zoom: 14,
     });
 
@@ -25,12 +25,24 @@ function initMap(position) {
     const directionsRenderer = new google.maps.DirectionsRenderer();
     directionsRenderer.setMap(map);
 
-    const request = {
+ /*    const request = {
         origin: new google.maps.LatLng(userLat, userLng),
         destination: new google.maps.LatLng(destination.lat, destination.lng),
         travelMode: google.maps.TravelMode[travelMode],
-    };
+    }; */
 
+    const request = {
+        origin: { lat: userLat, lng: userLng },
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING,
+        provideRouteAlternatives: true,
+        drivingOptions: {
+            departureTime: new Date(),
+            trafficModel: 'bestguess'
+        },
+        unitSystem: google.maps.UnitSystem.METRIC
+    };
+    
     directionsService.route(request, (result, status) => {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(result);
