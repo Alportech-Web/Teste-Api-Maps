@@ -11,7 +11,7 @@ function showRoute(position) {
     const userLng = position.coords.longitude;
     const destination = "Rua Arroio Grande, 19, São Paulo, SP, Brasil";
 
-    const googleMapsUrl = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyCw5AQmbKHFr1_WMxmP491J2p3qaIvnxTU
+    const googleMapsUrl = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyBGxfropwbTg9lsObKpk5-7UMTjZ7JfmFw
         &origin=${userLat},${userLng}
         &destination=${encodeURIComponent(destination)}
         &mode=driving`;
