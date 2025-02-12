@@ -32,13 +32,6 @@ button:hover {
     border-radius: 5px;
 }
 
-select {
-    padding: 10px;
-    font-size: 16px;
-    margin: 10px;
-}
-
-
 .loading {
     position: fixed;
     top: 50%;
