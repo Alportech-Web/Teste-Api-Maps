@@ -25,24 +25,24 @@ function initMap(position) {
     const directionsRenderer = new google.maps.DirectionsRenderer();
     directionsRenderer.setMap(map);
 
- /*    const request = {
-        origin: new google.maps.LatLng(userLat, userLng),
-        destination: new google.maps.LatLng(destination.lat, destination.lng),
-        travelMode: google.maps.TravelMode[travelMode],
-    }; */
-
     const request = {
+        origin: new google.maps.LatLng(userLat, userLng),
+        destination: destination,
+        travelMode: google.maps.TravelMode[travelMode],
+    };
+
+    /* const request = {
         origin: { lat: userLat, lng: userLng },
         destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING,
+        travelMode: google.maps.TravelMode[travelMode],
         provideRouteAlternatives: true,
         drivingOptions: {
             departureTime: new Date(),
             trafficModel: 'bestguess'
         },
         unitSystem: google.maps.UnitSystem.METRIC
-    };
-    
+    }; */
+
     directionsService.route(request, (result, status) => {
         if (status === google.maps.DirectionsStatus.OK) {
             directionsRenderer.setDirections(result);
