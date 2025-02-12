@@ -11,8 +11,8 @@ function initMap(position) {
     const userLng = position.coords.longitude;
     
     // NOVO DESTINO: VIP OFFICE - Vila Olímpia
-    const destination = { lat: -23.593204, lng: -46.684361 };
-
+    const destination = "R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
+    
     const map = new google.maps.Map(document.getElementById("map"), {
         center: destination,
         zoom: 14,
