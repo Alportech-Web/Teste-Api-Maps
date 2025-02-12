@@ -1,8 +1,8 @@
 document.getElementById('comoChegarBtn').addEventListener('click', () => {
+    // Mostra o overlay e o ícone de carregamento
+    document.getElementById('map-overlay').style.display = 'flex';
+    
     if (navigator.geolocation) {
-        // Mostra o ícone de carregamento
-        document.getElementById('loading').style.display = 'block';
-        
         navigator.geolocation.getCurrentPosition(initMap, showError);
     } else {
         alert("Seu navegador não suporta geolocalização.");
@@ -43,8 +43,8 @@ function initMap(position) {
             alert("Não foi possível traçar a rota: " + status);
         }
 
-        // Esconde o ícone de carregamento após o retorno da API
-        document.getElementById('loading').style.display = 'none';
+        // Esconde o overlay e o ícone de carregamento após o retorno da API
+        document.getElementById('map-overlay').style.display = 'none';
     });
 }
 
@@ -87,4 +87,7 @@ function showError(error) {
             alert("Ocorreu um erro desconhecido.");
             break;
     }
+
+    // Esconde o overlay se houver erro
+    document.getElementById('map-overlay').style.display = 'none';
 }
