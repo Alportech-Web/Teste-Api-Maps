@@ -14,7 +14,7 @@ function initMap(position) {
     const userLng = position.coords.longitude;
     const travelMode = document.getElementById('travelMode').value;
 
-    const destination = "R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
+    const destination = "Edifício Milan Head Office, R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
 
     const map = new google.maps.Map(document.getElementById("map"), {
         center: destination,
