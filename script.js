@@ -14,8 +14,8 @@ function initMap(position) {
     const userLng = position.coords.longitude;
     const travelMode = document.getElementById('travelMode').value;
 
-/*     const destination = { lat: -23.595723798559515, lng: -46.68847840275903 };
- */    const destination = "Edifício Milan Head Office, R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
+    /*const destination = { lat: -23.595723798559515, lng: -46.68847840275903 };*/    
+    const destination = "Edifício Milan Head Office, R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
 
     const map = new google.maps.Map(document.getElementById("map"), {
         center: destination,
@@ -56,7 +56,6 @@ function getEstimatedTime(userLat, userLng, destination, travelMode) {
         {
             origins: [new google.maps.LatLng(userLat, userLng)],  
             destinations: [new google.maps.LatLng(-23.595723798559515, -46.68847840275903)], 
-            
             travelMode: google.maps.TravelMode[travelMode],
             unitSystem: google.maps.UnitSystem.METRIC,
         },
@@ -65,9 +64,13 @@ function getEstimatedTime(userLat, userLng, destination, travelMode) {
 
             if (status === "OK" && response.rows[0].elements[0].status === "OK") {
                 const duration = response.rows[0].elements[0].duration.text;
+                const distance = response.rows[0].elements[0].distance.text; // Obtendo a distância
+
                 document.getElementById("estimatedTime").innerText = `Tempo estimado: ${duration}`;
+                document.getElementById("distance").innerText = `Distância: ${distance}`; // Exibindo a distância
             } else {
                 document.getElementById("estimatedTime").innerText = "Não foi possível calcular o tempo estimado.";
+                document.getElementById("distance").innerText = "Não foi possível calcular a distância.";
                 console.warn("Erro na Distance Matrix API:", response.rows[0].elements[0].status);
             }
         }
