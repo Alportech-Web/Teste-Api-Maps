@@ -55,7 +55,7 @@ function getEstimatedTime(userLat, userLng, destination, travelMode) {
     service.getDistanceMatrix(
         {
             origins: [new google.maps.LatLng(userLat, userLng)],  
-            destinations: [new google.maps.LatLng(destination)], 
+            destinations: [new google.maps.LatLng(destination.lat, destination.lng)], 
             travelMode: google.maps.TravelMode[travelMode],
             unitSystem: google.maps.UnitSystem.METRIC,
         },
