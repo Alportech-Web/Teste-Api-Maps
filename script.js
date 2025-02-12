@@ -14,7 +14,8 @@ function initMap(position) {
     const userLng = position.coords.longitude;
     const travelMode = document.getElementById('travelMode').value;
 
-    const destination = { lat: -23.595164, lng: -46.684636 };
+/*     const destination = { lat: -23.595723798559515, lng: -46.68847840275903 };
+ */    const destination = "Edifício Milan Head Office, R. Gomes de Carvalho, 1629 - Vila Olímpia, São Paulo - SP, 04547-006";
 
     const map = new google.maps.Map(document.getElementById("map"), {
         center: destination,
@@ -27,7 +28,7 @@ function initMap(position) {
 
     const request = {
         origin: new google.maps.LatLng(userLat, userLng),
-        destination: new google.maps.LatLng(destination.lat, destination.lng),
+        destination: destination,
         travelMode: google.maps.TravelMode[travelMode],
     };
 
@@ -54,7 +55,7 @@ function getEstimatedTime(userLat, userLng, destination, travelMode) {
     service.getDistanceMatrix(
         {
             origins: [new google.maps.LatLng(userLat, userLng)],  
-            destinations: [new google.maps.LatLng(destination.lat, destination.lng)], 
+            destinations: [new google.maps.LatLng(destination)], 
             travelMode: google.maps.TravelMode[travelMode],
             unitSystem: google.maps.UnitSystem.METRIC,
         },
