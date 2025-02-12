@@ -55,6 +55,8 @@ button:hover {
     border-top: 4px solid #3498db;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    z-index: 9999999999;
+    background-color: #00000050;
 }
 
 @keyframes spin {
