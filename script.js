@@ -1,21 +1,38 @@
 document.getElementById('comoChegarBtn').addEventListener('click', () => {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showRoute, showError);
+        navigator.geolocation.getCurrentPosition(initMap, showError);
     } else {
         alert("Seu navegador não suporta geolocalização.");
     }
 });
 
-function showRoute(position) {
+function initMap(position) {
     const userLat = position.coords.latitude;
     const userLng = position.coords.longitude;
-    const destination = "Rua Arroio Grande, 19, São Paulo, SP, Brasil";
+    const destination = { lat: -23.615808, lng: -46.591048 }; // Coordenadas da Rua Arroio Grande, 19
 
-    const googleMapsUrl = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyCw5AQmbKHFr1_WMxmP491J2p3qaIvnxTU&origin=${userLat},${userLng}&destination=${encodeURIComponent(destination)}&mode=driving`;
+    const map = new google.maps.Map(document.getElementById("map"), {
+        center: destination,
+        zoom: 14,
+    });
 
-    document.getElementById('map').innerHTML = `<iframe width="100%" height="100%" 
-        style="border:0;" loading="lazy" allowfullscreen 
-        referrerpolicy="no-referrer-when-downgrade" src="${googleMapsUrl}"></iframe>`;
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    directionsRenderer.setMap(map);
+
+    const request = {
+        origin: { lat: userLat, lng: userLng },
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING,
+    };
+
+    directionsService.route(request, (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(result);
+        } else {
+            alert("Não foi possível traçar a rota: " + status);
+        }
+    });
 }
 
 function showError(error) {
