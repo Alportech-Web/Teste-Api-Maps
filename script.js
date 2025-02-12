@@ -1,5 +1,8 @@
 document.getElementById('comoChegarBtn').addEventListener('click', () => {
     if (navigator.geolocation) {
+        // Mostra o ícone de carregamento
+        document.getElementById('loading').style.display = 'block';
+        
         navigator.geolocation.getCurrentPosition(initMap, showError);
     } else {
         alert("Seu navegador não suporta geolocalização.");
@@ -39,6 +42,9 @@ function initMap(position) {
         } else {
             alert("Não foi possível traçar a rota: " + status);
         }
+
+        // Esconde o ícone de carregamento após o retorno da API
+        document.getElementById('loading').style.display = 'none';
     });
 }
 
@@ -64,21 +70,4 @@ function getEstimatedTime(userLat, userLng, destination, travelMode) {
             }
         }
     );
-}
-
-function showError(error) {
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            alert("Permissão de localização negada.");
-            break;
-        case error.POSITION_UNAVAILABLE:
-            alert("Informação de localização indisponível.");
-            break;
-        case error.TIMEOUT:
-            alert("Tempo de requisição expirado.");
-            break;
-        case error.UNKNOWN_ERROR:
-            alert("Ocorreu um erro desconhecido.");
-            break;
-    }
 }
